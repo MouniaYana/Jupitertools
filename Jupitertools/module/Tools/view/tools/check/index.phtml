@@ -1,0 +1,66 @@
+
+<?php 
+$title = 'check new IP';
+ $this->headTitle($title);
+ ?>
+<script  src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+ <script type="text/javascript">
+
+
+	  
+	  
+	  
+
+	  function check(){
+          check.value='hahahha';
+		//  alert(ip.value);
+	        $.ajax({
+	            url:        '/check/check',
+	            type:       'POST',
+	            dataType:   'json',
+	            async:      true,
+	            data:       $("#ip").serialize(),
+	            success: function(data, status){
+	                msg = data['check'].valueOf();
+	                alert( 'test ' + msg);
+	                $('#check').val(msg);
+	            },
+	            error : function(xhr, textStatus, errorThrown) {
+	                if (xhr.status === 0) {
+	                    alert('Not connected. Verify Network.');
+	                } else if (xhr.status == 404) {
+	                    alert('Requested page not found. [404]');
+	                } else if (xhr.status == 500) {
+	                    alert('Server Error [500].');
+	                } else if (errorThrown === 'parsererror') {
+	                    alert('Requested JSON parse failed.');
+	                } else if (errorThrown === 'timeout') {
+	                    alert('Time out error.');
+	                } else if (errorThrown === 'abort') {
+	                    alert('Ajax request aborted.');
+	                } else {
+	                    alert('Remote sever unavailable. Please try later');
+	                }
+	            }
+	        });
+	    };
+
+ </script>
+ 
+ 
+ <h1><?php echo $this->escapeHtml($title); ?></h1>
+ <?php
+ //$form->setAttribute('action',  $this->url('check', array('action' => 'check')));
+// $form->prepare();
+
+// echo $this->form()->openTag($form);
+ echo $this->formRow($form->get('ip'));
+
+ echo $this->formSubmit($form->get('check_ip'));
+// echo $this->form()->closeTag();
+ ?>
+ <div id="check">
+ 
+
+ </div>
+ 

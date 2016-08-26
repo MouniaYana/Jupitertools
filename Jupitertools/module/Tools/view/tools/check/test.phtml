@@ -1,0 +1,57 @@
+  <script  src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+  
+  <script type="text/javascript">
+  $(document).ready(function(){
+
+	    $('#loadingDiv').hide();
+	    $(document).ajaxStart(function() {
+	        $( "#loadingDiv" ).show();
+	    });
+	    $(document).ajaxStop(function() {
+	        $( "#loadingDiv" ).hide();
+	    });
+
+	    $("#action").on("click", function(event){
+
+	        $.ajax({
+	            url:        '/check/test',
+	            type:       'POST',
+	            dataType:   'json',
+	            async:      true,
+	            data:       $("#usd").serialize(),
+	            success: function(data, status){
+	                msg = data['cny'].valueOf();
+	                //alert( 'test ' + msg);
+	                $('#cny').val(msg);
+	            },
+	            error : function(xhr, textStatus, errorThrown) {
+	                if (xhr.status === 0) {
+	                    alert('Not connected. Verify Network.');
+	                } else if (xhr.status == 404) {
+	                    alert('Requested page not found. [404]');
+	                } else if (xhr.status == 500) {
+	                    alert('Server Error [500].');
+	                } else if (errorThrown === 'parsererror') {
+	                    alert('Requested JSON parse failed.');
+	                } else if (errorThrown === 'timeout') {
+	                    alert('Time out error.');
+	                } else if (errorThrown === 'abort') {
+	                    alert('Ajax request aborted.');
+	                } else {
+	                    alert('Remote sever unavailable. Please try later');
+	                }
+	            }
+	        });
+	    });
+	});
+</script>
+  
+  <input type="text" name="usd" id="usd" placeholder="Amount in USD">
+        <br>
+        <input type="button" class="btn btn-success" id="action"
+               style="float: left;" value="Convert to CNY">
+        <div id="loadingDiv" style="float:left; margin-left:20px;border: 0;">
+            <img src="" alt="loading... wait">
+        </div>
+        <br><br>
+        <input type="text" id="cny" placeholder="Result in CNY">

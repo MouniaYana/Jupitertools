@@ -1,0 +1,23 @@
+<?php
+$title = 'Edit IP';
+$this->headTitle($title);
+?>
+ <h1><?php echo $this->escapeHtml($title); ?></h1>
+
+ <?php
+ $form = $this->form;
+ $form->setAttribute('action', $this->url(
+     'monitor',
+     array(
+         'action' => 'edit',
+         'id'     => $this->id,
+     )
+ ));
+ $form->prepare();
+
+ echo $this->form()->openTag($form);
+ echo $this->formHidden($form->get('id'));
+//  echo $this->formHidden($form->get('added'));
+ echo $this->formRow($form->get('ip'));
+ echo $this->formSubmit($form->get('add_ip'));
+ echo $this->form()->closeTag();

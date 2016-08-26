@@ -1,0 +1,126 @@
+<?php
+ // module/monitor/view/monitor/monitor/index.phtml:
+
+ $title = 'IP addresses';
+ $this->headTitle($title);
+ ?>
+ <h1><?php echo $this->escapeHtml($title); ?></h1>
+ 
+ <script  src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js">
+ 
+ </script>
+
+ <script>
+function delete_ip(ip_id){
+	//alert("jquery is working") 
+	var result = confirm('are u sure !');
+	if(result==true){
+		$.ajax({
+                            type : 'POST',
+                            url	 : '/monitor/delete',
+                            data : {'id': ip_id},
+                            success: function(data)
+                            {
+
+if(data.response == 'ok'){
+	
+    $("#row_"+ip_id).fadeOut(2000,function(){
+    	$("#row_"+ip_id).remove();
+    	
+        });
+	
+}
+else{
+	alert("Ip could not deleted");
+}
+
+
+                            },
+                            failure: function()
+                            {alert("miao miao :c");}
+			})
+		
+	
+}}
+ </script>
+
+
+<div class="row">
+  <div class="col-md-8"><h1>List of our IPs</h1></div>
+  <div class="col-md-4"><a href="<?php echo $this->url('monitor',
+             array('action'=>'add'));?>" id="myBtn"><b  class="glyphicon glyphicon-plus"></b></a></div>
+<!--   <div id="myModal" class="modal"> -->
+
+  <!-- Modal content -->
+<!--   <div class="modal-content"> -->
+  <?php 
+//     $form->setAttribute('action', $this->url('monitor', array('action' => 'index')));
+//  $form->prepare();
+
+//  echo $this->form()->openTag($form);
+//  echo $this->formRow($form->get('ip'));
+//  echo $this->formhidden($form->get('added'));
+//  echo $this->formSubmit($form->get('add_ip'));
+//  echo $this->form()->closeTag();
+//  ?>
+<!--   </div> -->
+
+</div>
+  </div>
+<!--href="<?php echo $this->url('monitor',array('action' =>'add'))?>"-->
+ <table class="table">
+ <tr >
+     <th>IP</th>
+     <th>Report</th>
+     <th>Type</th>
+     <th>Added</th>
+     <th>Checked</th>
+     <th>Action</th>
+ </tr>
+ <?php foreach ($monitors as $monitor) : ?>
+ <tr id="<?php echo "row_".$monitor->id;?>">
+     <td><?php echo $this->escapeHtml($monitor->ip);?></td>
+     <td><?php echo $this->escapeHtml($monitor->report)."/"."130";?></td>
+     <td><?php echo $this->escapeHtml($monitor->type);?></td>
+     <td><?php echo $this->escapeHtml($monitor->added);?></td>
+     <td><?php echo $this->escapeHtml($monitor->checked);?></td>
+     <td>
+         <a href="<?php echo $this->url('monitor',
+             array('action'=>'edit', 'id' => $monitor->id));?>"><b class='glyphicon glyphicon-pencil'></b></a>
+         <a onclick="delete_ip(<?php echo $monitor->id;?>);"><b class='glyphicon glyphicon-trash'></b></a>
+     </td>
+ </tr>
+ <?php endforeach; ?>
+ </table>
+ 
+
+ <!--  href="<?php echo $this->url('monitor',
+             array('action'=>'delete', 'id' => $monitor->id));?>"
+              <script>
+ var modal = document.getElementById('myModal');
+
+//Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+//Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+//When the user clicks on the button, open the modal 
+btn.onclick = function() {
+ modal.style.display = "block";
+}
+
+//When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+ modal.style.display = "none";
+}
+
+//When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+ if (event.target == modal) {
+     modal.style.display = "none";
+ }
+}
+
+ </script>
+-->
